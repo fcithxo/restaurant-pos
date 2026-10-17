@@ -453,21 +453,82 @@
       });
     }
 
-    function checkout() {
-      if (order.length === 0) {
-        alert("Please add at least one item before checkout.");
-        return;
-      }
+    
+function checkout() {
+  if (order.length === 0) {
+    alert("Please add at least one item before checkout.");
+    return;
+  }
 
-      const total = order.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  const total = order.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 
-      alert("Order summary\n\n" +
-        order.map(item => item.name + " x" + item.quantity).join("\n") +
-        "\n\nTotal: " + formatPeso(total) +
-        "\n\nThis is a demo checkout. No payment has been processed.");
+  const receivedInput = prompt(
+    "GREEN PLATE POS\n\nTotal: " + formatPeso(total) +
+    "\n\nEnter cash received by customer:"
+  );
 
-      clearOrder();
+  if (receivedInput === null) {
+    return;
+  }
+
+  const received = Number(receivedInput);
+
+  if (
+    receivedInput.trim() === "" ||
+    !Number.isFinite(received) ||
+    received < total
+  ) {
+    alert("Invalid payment. Please enter an amount equal to or greater than " + formatPeso(total) + ".");
+    return;
+  }
+
+  const change = Math.round((received - total) * 100) / 100;
+  const orderCopy = order.map(item => ({ ...item }));
+
+  const receipt = [
+    "GREEN PLATE",
+    "CUSTOMER RECEIPT",
+    "--------------------------",
+    ...orderCopy.map(item =>
+      item.name + " x" + item.quantity +
+      " = " + formatPeso(item.price * item.quantity)
+    ),
+    "--------------------------",
+    "TOTAL: " + formatPeso(total),
+    "CASH: " + formatPeso(received),
+    "CHANGE: " + formatPeso(change),
+    "Thank you for dining with us!"
+  ].join("\n");
+
+  const printReceipt = confirm(
+    receipt + "\n\nPress OK to print the receipt."
+  );
+
+  if (printReceipt) {
+    const printWindow = window.open("", "_blank");
+
+    if (printWindow) {
+      printWindow.document.write(
+        "<!DOCTYPE html><html><head><title>Green Plate Receipt</title>" +
+        "<style>body{font-family:monospace;padding:20px;white-space:pre-wrap}" +
+        "</style></head><body><pre>" +
+        receipt.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") +
+        "</pre></body></html>"
+      );
+      printWindow.document.close();
+      printWindow.focus();
+      printWindow.print();
+    } else {
+      alert("Your browser blocked the print window. Please allow pop-ups and try again.");
     }
+  }
+
+  clearOrder();
+}
+
   </script>
 </body>
 </html>
