@@ -1,74 +1,224 @@
 
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Restaurant POS</title>
+
   <style>
+    * {
+      box-sizing: border-box;
+    }
+
     body {
+      margin: 0;
       font-family: Arial, sans-serif;
-      background: #f4f5f7;
-      padding: 30px;
+      background: #f5f6f2;
+      color: #24352c;
     }
 
-    h1 {
-      color: #174c3c;
+    header {
+      background: #174c3c;
+      color: white;
+      padding: 22px 28px;
     }
 
-    .menu {
+    header h1 {
+      margin: 0 0 6px;
+      font-size: 25px;
+    }
+
+    header p {
+      margin: 0;
+      color: #dce9df;
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 1fr 320px;
+      gap: 24px;
+      padding: 24px;
+      max-width: 1400px;
+      margin: auto;
+    }
+
+    .menu, .order {
       background: white;
-      padding: 20px;
-      border-radius: 12px;
-      max-width: 400px;
+      border-radius: 14px;
+      padding: 22px;
+      box-shadow: 0 3px 15px #1b352b0b;
     }
 
-    button {
-      display: block;
+    .menu h2, .order h2 {
+      margin-top: 0;
+    }
+
+    .categories {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin: 18px 0;
+    }
+
+    .categories button {
+      background: #e9f0e9;
+      color: #174c3c;
+      border: 0;
+      border-radius: 20px;
+      padding: 10px 16px;
+      cursor: pointer;
+    }
+
+    .categories button:first-child {
+      background: #174c3c;
+      color: white;
+    }
+
+    .food-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .food-card {
+      border: 1px solid #e7ebe5;
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .food-image {
+      background: #edf1e8;
+      border-radius: 10px;
+      padding: 20px;
+      text-align: center;
+      font-size: 42px;
+    }
+
+    .food-card h3 {
+      margin: 12px 0 6px;
+    }
+
+    .price {
+      color: #176b50;
+      font-weight: bold;
+    }
+
+    .add-button, .checkout {
       width: 100%;
-      padding: 12px;
-      margin: 10px 0;
-      border: none;
-      border-radius: 8px;
       background: #176b50;
       color: white;
+      border: 0;
+      border-radius: 8px;
+      padding: 12px;
+      margin-top: 12px;
       cursor: pointer;
+    }
+
+    .order {
+      align-self: start;
+    }
+
+    .empty {
+      color: #7a857d;
+      text-align: center;
+      padding: 28px 0;
+    }
+
+    .total {
+      display: flex;
+      justify-content: space-between;
+      border-top: 1px solid #e5e9e3;
+      padding-top: 18px;
+      margin-top: 18px;
+      font-weight: bold;
+    }
+
+    @media (max-width: 750px) {
+      .layout {
+        grid-template-columns: 1fr;
+        padding: 14px;
+      }
+
+      .food-grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 380px) {
+      .food-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
+
 <body>
-  <h1>Restaurant POS</h1>
-  <p>Welcome to our restaurant!</p>
+  <header>
+    <h1>Restaurant POS</h1>
+    <p>Order Management System</p>
+  </header>
 
-  <div class="menu">
-    <h2>Food Menu</h2>
-    <button onclick="order('Chicken', 150)">
-      Chicken - ₱150
-    </button>
-    <button onclick="order('Burger', 120)">
-      Burger - ₱120
-    </button>
-    <button onclick="order('Fries', 80)">
-      Fries - ₱80
-    </button>
+  <main class="layout">
+    <section class="menu">
+      <h2>Food Menu</h2>
+      <p>Select an item to start an order.</p>
 
-    <h2>Current Order</h2>
-    <ul id="cart"></ul>
-    <h3>Total: ₱<span id="total">0</span></h3>
-  </div>
+      <div class="categories">
+        <button>All Items</button>
+        <button>Meals</button>
+        <button>Burgers</button>
+        <button>Sides</button>
+      </div>
 
-  <script>
-    let total = 0;
+      <div class="food-grid">
+        <article class="food-card">
+          <div class="food-image">🍗</div>
+          <h3>Chicken Meal</h3>
+          <div class="price">₱150.00</div>
+          <button class="add-button">+ Add to Order</button>
+        </article>
 
-    function order(name, price) {
-      const item = document.createElement('li');
-      item.textContent = name + ' - ₱' + price;
-      document.getElementById('cart').appendChild(item);
+        <article class="food-card">
+          <div class="food-image">🍔</div>
+          <h3>Classic Burger</h3>
+          <div class="price">₱120.00</div>
+          <button class="add-button">+ Add to Order</button>
+        </article>
 
-      total += price;
-      document.getElementById('total').textContent = total;
-    }
-  </script>
+        <article class="food-card">
+          <div class="food-image">🍟</div>
+          <h3>French Fries</h3>
+          <div class="price">₱80.00</div>
+          <button class="add-button">+ Add to Order</button>
+        </article>
+
+        <article class="food-card">
+          <div class="food-image">🥤</div>
+          <h3>Iced Drink</h3>
+          <div class="price">₱55.00</div>
+          <button class="add-button">+ Add to Order</button>
+        </article>
+      </div>
+    </section>
+
+    <aside class="order">
+      <h2>Current Order</h2>
+      <p>Order #0001</p>
+
+      <div class="empty">
+        Your order is empty.
+      </div>
+
+      <div class="total">
+        <span>Total</span>
+        <span>₱0.00</span>
+      </div>
+
+      <button class="checkout">Proceed to Checkout</button>
+    </aside>
+  </main>
 </body>
 </html>
 
