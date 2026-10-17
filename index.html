@@ -324,7 +324,16 @@
         <h3 class="section-title">Popular Menu</h3>
 
         <div class="menu" id="menu">
-          <div class="food-card" data-name="chicken meal">
+          
+<div class="category-buttons">
+  <button class="category-btn active" onclick="filterCategory('all', this)">All</button>
+  <button class="category-btn" onclick="filterCategory('Meals', this)">Meals</button>
+  <button class="category-btn" onclick="filterCategory('Pasta', this)">Pasta</button>
+  <button class="category-btn" onclick="filterCategory('Burgers', this)">Burgers</button>
+  <button class="category-btn" onclick="filterCategory('Drinks', this)">Drinks</button>
+  <button class="category-btn" onclick="filterCategory('Desserts', this)">Desserts</button>
+</div>
+<div class="food-card" data-name="chicken meal">data-category="Meals">
             <div class="food-icon">🍗</div>
             <h3>Chicken Meal</h3>
             <p>Classic chicken with rice</p>
@@ -334,7 +343,7 @@
             </div>
           </div>
 
-          <div class="food-card" data-name="classic burger">
+          <div class="food-card" data-name="classic burger">data-category="Burgers">
             <div class="food-icon">🍔</div>
             <h3>Classic Burger</h3>
             <p>Beef patty with fresh toppings</p>
@@ -344,7 +353,7 @@
             </div>
           </div>
 
-          <div class="food-card" data-name="french fries">
+          <div class="food-card" data-name="french fries">data-category="Meals">
             <div class="food-icon">🍟</div>
             <h3>French Fries</h3>
             <p>Crispy golden potato fries</p>
@@ -354,7 +363,7 @@
             </div>
           </div>
 
-          <div class="food-card" data-name="iced drink">
+          <div class="food-card" data-name="iced drink">data-category="Drinks">
             <div class="food-icon">🥤</div>
             <h3>Iced Drink</h3>
             <p>Refreshing cold beverage</p>
@@ -514,6 +523,30 @@ function checkout() {
       printWindow.document.write(
         "<!DOCTYPE html><html><head><title>Green Plate Receipt</title>" +
         "<style>body{font-family:monospace;padding:20px;white-space:pre-wrap}" +
+       
+.category-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.category-btn {
+  border: 1px solid #245b39;
+  border-radius: 20px;
+  padding: 8px 14px;
+  background: white;
+  color: #245b39;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.category-btn.active,
+.category-btn:hover {
+  background: #245b39;
+  color: white;
+}
+
         "</style></head><body><pre>" +
         receipt.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") +
         "</pre></body></html>"
@@ -527,6 +560,24 @@ function checkout() {
   }
 
   clearOrder();
+}
+
+ 
+function filterCategory(category, button) {
+  document.querySelectorAll(".category-btn").forEach(btn => {
+    btn.classList.remove("active");
+  });
+
+  button.classList.add("active");
+
+  document.querySelectorAll(".food-card").forEach(card => {
+    const cardCategory = card.dataset.category;
+
+    const matchesCategory =
+      category === "all" || cardCategory === category;
+
+    card.style.display = matchesCategory ? "" : "none";
+  });
 }
 
   </script>
