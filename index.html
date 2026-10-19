@@ -14,6 +14,29 @@
       font-family: Arial, sans-serif;
     }
 
+.category-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 20px;
+}
+
+.category-btn {
+  border: 1px solid #245b39;
+  border-radius: 20px;
+  padding: 8px 14px;
+  background: white;
+  color: #245b39;
+  cursor: pointer;
+  font-size: 13px;
+}
+
+.category-btn.active,
+.category-btn:hover {
+  background: #245b39;
+  color: white;
+}
+    
     body {
       background: #f4f6f2;
       color: #26352b;
@@ -524,28 +547,7 @@ function checkout() {
         "<!DOCTYPE html><html><head><title>Green Plate Receipt</title>" +
         "<style>body{font-family:monospace;padding:20px;white-space:pre-wrap}" +
        
-.category-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 20px;
-}
 
-.category-btn {
-  border: 1px solid #245b39;
-  border-radius: 20px;
-  padding: 8px 14px;
-  background: white;
-  color: #245b39;
-  cursor: pointer;
-  font-size: 13px;
-}
-
-.category-btn.active,
-.category-btn:hover {
-  background: #245b39;
-  color: white;
-}
 
         "</style></head><body><pre>" +
         receipt.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") +
