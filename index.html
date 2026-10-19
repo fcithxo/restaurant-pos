@@ -2,586 +2,337 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Restaurant POS System</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Restaurant POS System</title>
 
-  <style>
-    * {
-      box-sizing: border-box;
-      margin: 0;
-      padding: 0;
-      font-family: Arial, sans-serif;
-    }
+    <style>
+        * {
+            box-sizing: border-box;
+        }
 
-.category-buttons {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 20px;
-}
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            background: #f4f6f8;
+            color: #333;
+        }
 
-.category-btn {
-  border: 1px solid #245b39;
-  border-radius: 20px;
-  padding: 8px 14px;
-  background: white;
-  color: #245b39;
-  cursor: pointer;
-  font-size: 13px;
-}
+        header {
+            background: #263238;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
 
-.category-btn.active,
-.category-btn:hover {
-  background: #245b39;
-  color: white;
-}
-    
-    body {
-      background: #f4f6f2;
-      color: #26352b;
-    }
+        .container {
+            display: grid;
+            grid-template-columns: 2fr 1fr;
+            gap: 20px;
+            padding: 20px;
+            max-width: 1200px;
+            margin: auto;
+        }
 
-    .header {
-      background: #183f2b;
-      color: white;
-      padding: 22px 30px;
-    }
+        h2 {
+            margin-top: 0;
+        }
 
-    .header h1 {
-      font-size: 25px;
-    }
+        .menu {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
+            gap: 15px;
+        }
 
-    .header p {
-      margin-top: 6px;
-      color: #d5e5d8;
-      font-size: 14px;
-    }
+        .item, .cart {
+            background: white;
+            padding: 18px;
+            border-radius: 10px;
+            box-shadow: 0 2px 6px #00000012;
+        }
 
-    .layout {
-      display: grid;
-      grid-template-columns: 190px 1fr;
-      min-height: calc(100vh - 85px);
-    }
+        .item {
+            text-align: center;
+        }
 
-    .sidebar {
-      background: #214c35;
-      padding: 25px 15px;
-      color: white;
-    }
+        .item h3 {
+            margin-top: 5px;
+        }
 
-    .sidebar h3 {
-      margin: 0 10px 25px;
-      font-size: 13px;
-      color: #c4d9c9;
-      text-transform: uppercase;
-    }
+        .price {
+            color: #388e3c;
+            font-weight: bold;
+            margin: 10px 0;
+        }
 
-    .nav-item {
-      padding: 13px 12px;
-      margin-bottom: 8px;
-      border-radius: 8px;
-      font-size: 14px;
-    }
+        button {
+            border: none;
+            border-radius: 5px;
+            padding: 10px 14px;
+            cursor: pointer;
+            font-size: 14px;
+        }
 
-    .nav-item.active {
-      background: #d9eadc;
-      color: #183f2b;
-      font-weight: bold;
-    }
+        .add-btn {
+            background: #388e3c;
+            color: white;
+            width: 100%;
+        }
 
-    .main {
-      padding: 28px;
-      display: grid;
-      grid-template-columns: minmax(0, 1fr) 310px;
-      gap: 25px;
-      align-items: start;
-    }
+        .add-btn:hover {
+            background: #2e7d32;
+        }
 
-    .welcome {
-      margin-bottom: 22px;
-    }
+        .cart {
+            align-self: start;
+        }
 
-    .welcome h2 {
-      font-size: 24px;
-      margin-bottom: 7px;
-    }
+        .cart-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 8px;
+            border-bottom: 1px solid #ddd;
+            padding: 12px 0;
+        }
 
-    .welcome p {
-      color: #778078;
-      font-size: 14px;
-    }
+        .cart-row button {
+            padding: 5px 9px;
+            background: #eeeeee;
+        }
 
-    .search {
-      width: 100%;
-      padding: 13px 15px;
-      border: 1px solid #dce3dc;
-      border-radius: 9px;
-      margin-bottom: 22px;
-      background: white;
-      font-size: 14px;
-    }
+        .remove-btn {
+            color: #c62828;
+        }
 
-    .section-title {
-      font-size: 18px;
-      margin-bottom: 15px;
-    }
+        .total {
+            font-size: 21px;
+            font-weight: bold;
+            margin: 20px 0;
+        }
 
-    .menu {
-      display: grid;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: 15px;
-    }
+        .checkout-btn {
+            background: #1565c0;
+            color: white;
+            width: 100%;
+            padding: 14px;
+        }
 
-    .food-card {
-      background: white;
-      border: 1px solid #e4e9e3;
-      border-radius: 12px;
-      padding: 18px;
-    }
+        .clear-btn {
+            background: #e0e0e0;
+            width: 100%;
+            margin-top: 8px;
+        }
 
-    .food-icon {
-      background: #edf4ed;
-      border-radius: 10px;
-      padding: 17px;
-      font-size: 35px;
-      text-align: center;
-      margin-bottom: 14px;
-    }
+        #receipt {
+            white-space: pre-wrap;
+            margin-top: 15px;
+            font-size: 13px;
+        }
 
-    .food-card h3 {
-      font-size: 16px;
-      margin-bottom: 7px;
-    }
-
-    .food-card p {
-      color: #718074;
-      font-size: 13px;
-      margin-bottom: 14px;
-    }
-
-    .food-bottom {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      gap: 8px;
-    }
-
-    .price {
-      color: #245b39;
-      font-weight: bold;
-    }
-
-    button {
-      border: none;
-      cursor: pointer;
-      border-radius: 7px;
-      padding: 10px 12px;
-      font-weight: bold;
-    }
-
-    .add-btn {
-      background: #245b39;
-      color: white;
-    }
-
-    .add-btn:hover {
-      background: #183f2b;
-    }
-
-    .order-panel {
-      background: white;
-      padding: 20px;
-      border-radius: 12px;
-      border: 1px solid #e4e9e3;
-    }
-
-    .order-heading {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 20px;
-    }
-
-    .order-heading h2 {
-      font-size: 19px;
-    }
-
-    .order-count {
-      background: #e6f0e7;
-      color: #245b39;
-      border-radius: 20px;
-      padding: 5px 9px;
-      font-size: 12px;
-    }
-
-    .empty {
-      color: #879087;
-      text-align: center;
-      padding: 35px 5px;
-      font-size: 14px;
-    }
-
-    .order-item {
-      display: flex;
-      justify-content: space-between;
-      gap: 10px;
-      padding: 13px 0;
-      border-bottom: 1px solid #edf0ed;
-      font-size: 13px;
-    }
-
-    .order-item small {
-      display: block;
-      color: #7b857c;
-      margin-top: 5px;
-    }
-
-    .remove-btn {
-      background: #f9e8e5;
-      color: #a33b2c;
-      padding: 5px 8px;
-      margin-top: 5px;
-      font-size: 11px;
-    }
-
-    .total-row {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 20px;
-      font-size: 15px;
-    }
-
-    .total-row strong {
-      font-size: 21px;
-      color: #245b39;
-    }
-
-    .checkout {
-      width: 100%;
-      margin-top: 20px;
-      background: #245b39;
-      color: white;
-      padding: 14px;
-      font-size: 14px;
-    }
-
-    .clear-btn {
-      width: 100%;
-      margin-top: 9px;
-      background: #f0f2ef;
-      color: #435046;
-      padding: 12px;
-    }
-
-    @media (max-width: 900px) {
-      .layout {
-        grid-template-columns: 1fr;
-      }
-
-      .sidebar {
-        display: flex;
-        gap: 8px;
-        padding: 12px;
-        overflow-x: auto;
-      }
-
-      .sidebar h3 {
-        display: none;
-      }
-
-      .nav-item {
-        white-space: nowrap;
-        margin: 0;
-      }
-
-      .main {
-        grid-template-columns: 1fr;
-        padding: 18px;
-      }
-
-      .order-panel {
-        width: 100%;
-      }
-    }
-
-    @media (max-width: 450px) {
-      .menu {
-        grid-template-columns: 1fr;
-      }
-    }
-  </style>
+        @media (max-width: 700px) {
+            .container {
+                grid-template-columns: 1fr;
+                padding: 12px;
+            }
+        }
+    </style>
 </head>
 
 <body>
-  <header class="header">
-    <h1>🍃 Green Plate POS</h1>
-    <p>Restaurant Management System</p>
-  </header>
 
-  <div class="layout">
-    <aside class="sidebar">
-      <h3>Main Menu</h3>
-      <div class="nav-item active">🏠 Dashboard</div>
-      <div class="nav-item">🍽️ Food Menu</div>
-      <div class="nav-item">🧾 Orders</div>
-      <div class="nav-item">📊 Reports</div>
-      <div class="nav-item">⚙️ Settings</div>
-    </aside>
+<header>
+    <h1>Restaurant POS System</h1>
+    <p>Point of Sale | Order Management</p>
+</header>
 
-    <main class="main">
-      <section>
-        <div class="welcome">
-          <h2>Point of Sale</h2>
-          <p>Select food items to add them to the customer's order.</p>
+<main class="container">
+
+    <section>
+        <h2>Food Menu</h2>
+
+        <div class="menu" id="menu"></div>
+    </section>
+
+    <section class="cart">
+        <h2>Current Order</h2>
+
+        <div id="cart-items">
+            <p>Your cart is empty.</p>
         </div>
 
-        <input
-          class="search"
-          id="search"
-          type="text"
-          placeholder="🔍 Search food menu..."
-          oninput="filterMenu()"
-        >
+        <p class="total">
+            Total: ₱<span id="total">0.00</span>
+        </p>
 
-        <h3 class="section-title">Popular Menu</h3>
+        <button class="checkout-btn" onclick="checkout()">
+            Checkout
+        </button>
 
-        <div class="menu" id="menu">
-          
-<div class="category-buttons">
-  <button class="category-btn active" onclick="filterCategory('all', this)">All</button>
-  <button class="category-btn" onclick="filterCategory('Meals', this)">Meals</button>
-  <button class="category-btn" onclick="filterCategory('Pasta', this)">Pasta</button>
-  <button class="category-btn" onclick="filterCategory('Burgers', this)">Burgers</button>
-  <button class="category-btn" onclick="filterCategory('Drinks', this)">Drinks</button>
-  <button class="category-btn" onclick="filterCategory('Desserts', this)">Desserts</button>
-</div>
-<div class="food-card" data-name="chicken meal" data-category="Meals">
-            <div class="food-icon">🍗</div>
-            <h3>Chicken Meal</h3>
-            <p>Classic chicken with rice</p>
-            <div class="food-bottom">
-              <span class="price">₱150.00</span>
-              <button class="add-btn" onclick="addItem('Chicken Meal', 150)">+ Add</button>
+        <button class="clear-btn" onclick="clearCart()">
+            Clear Order
+        </button>
+
+        <div id="receipt"></div>
+    </section>
+
+</main>
+
+<script>
+    const products = [
+        { id: 1, name: "Beef Burger", price: 120 },
+        { id: 2, name: "Chicken Meal", price: 150 },
+        { id: 3, name: "Spaghetti", price: 100 },
+        { id: 4, name: "French Fries", price: 60 },
+        { id: 5, name: "Fried Rice", price: 45 },
+        { id: 6, name: "Iced Tea", price: 35 },
+        { id: 7, name: "Coffee", price: 50 },
+        { id: 8, name: "Chocolate Cake", price: 85 }
+    ];
+
+    let cart = [];
+
+    function displayMenu() {
+        const menu = document.getElementById("menu");
+
+        menu.innerHTML = products.map(product => `
+            <div class="item">
+                <h3>${product.name}</h3>
+                <p class="price">₱${product.price.toFixed(2)}</p>
+                <button class="add-btn"
+                    onclick="addToCart(${product.id})">
+                    Add to Order
+                </button>
             </div>
-          </div>
-
-         <div class="food-card" data-name="classic burger" data-category="Burgers">
-            <div class="food-icon">🍔</div>
-            <h3>Classic Burger</h3>
-            <p>Beef patty with fresh toppings</p>
-            <div class="food-bottom">
-              <span class="price">₱120.00</span>
-              <button class="add-btn" onclick="addItem('Classic Burger', 120)">+ Add</button>
-            </div>
-          </div>
-
-         <div class="food-card" data-name="french fries" data-category="Meals">
-            <div class="food-icon">🍟</div>
-            <h3>French Fries</h3>
-            <p>Crispy golden potato fries</p>
-            <div class="food-bottom">
-              <span class="price">₱80.00</span>
-              <button class="add-btn" onclick="addItem('French Fries', 80)">+ Add</button>
-            </div>
-          </div>
-
-        <div class="food-card" data-name="iced drink" data-category="Drinks">
-            <div class="food-icon">🥤</div>
-            <h3>Iced Drink</h3>
-            <p>Refreshing cold beverage</p>
-            <div class="food-bottom">
-              <span class="price">₱55.00</span>
-              <button class="add-btn" onclick="addItem('Iced Drink', 55)">+ Add</button>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <aside class="order-panel">
-        <div class="order-heading">
-          <h2>Current Order</h2>
-          <span class="order-count" id="count">0 items</span>
-        </div>
-
-        <div id="order-list">
-          <div class="empty">🛒<br><br>No items yet.<br>Select food from the menu.</div>
-        </div>
-
-        <div class="total-row">
-          <span>Total Amount</span>
-          <strong id="total">₱0.00</strong>
-        </div>
-
-        <button class="checkout" onclick="checkout()">Proceed to Checkout</button>
-        <button class="clear-btn" onclick="clearOrder()">Clear Order</button>
-      </aside>
-    </main>
-  </div>
-
-  <script>
-    let order = [];
-
-    function formatPeso(amount) {
-      return "₱" + amount.toFixed(2);
-    }
-
-    function addItem(name, price) {
-      const existing = order.find(item => item.name === name);
-
-      if (existing) {
-        existing.quantity++;
-      } else {
-        order.push({ name, price, quantity: 1 });
-      }
-
-      renderOrder();
-    }
-
-    function removeItem(name) {
-      order = order.filter(item => item.name !== name);
-      renderOrder();
-    }
-
-    function clearOrder() {
-      order = [];
-      renderOrder();
-    }
-
-    function renderOrder() {
-      const list = document.getElementById("order-list");
-      const totalElement = document.getElementById("total");
-      const countElement = document.getElementById("count");
-
-      if (order.length === 0) {
-        list.innerHTML = '<div class="empty">🛒<br><br>No items yet.<br>Select food from the menu.</div>';
-      } else {
-        list.innerHTML = order.map(item => `
-          <div class="order-item">
-            <div>
-              <strong>${item.name}</strong>
-              <small>${item.quantity} × ${formatPeso(item.price)}</small>
-            </div>
-            <div>
-              <strong>${formatPeso(item.price * item.quantity)}</strong><br>
-              <button class="remove-btn" onclick="removeItem('${item.name}')">Remove</button>
-            </div>
-          </div>
         `).join("");
-      }
-
-      const total = order.reduce((sum, item) => sum + item.price * item.quantity, 0);
-      const quantity = order.reduce((sum, item) => sum + item.quantity, 0);
-
-      totalElement.textContent = formatPeso(total);
-      countElement.textContent = quantity + (quantity === 1 ? " item" : " items");
     }
 
-    function filterMenu() {
-      const search = document.getElementById("search").value.toLowerCase();
+    function addToCart(id) {
+        const product = products.find(item => item.id === id);
+        const existing = cart.find(item => item.id === id);
 
-      document.querySelectorAll(".food-card").forEach(card => {
-        card.style.display = card.dataset.name.includes(search) ? "" : "none";
-      });
+        if (existing) {
+            existing.quantity++;
+        } else {
+            cart.push({
+                ...product,
+                quantity: 1
+            });
+        }
+
+        renderCart();
     }
 
-    
-function checkout() {
-  if (order.length === 0) {
-    alert("Please add at least one item before checkout.");
-    return;
-  }
+    function changeQuantity(id, amount) {
+        const item = cart.find(item => item.id === id);
 
-  const total = order.reduce(
-    (sum, item) => sum + item.price * item.quantity,
-    0
-  );
+        if (!item) return;
 
-  const receivedInput = prompt(
-    "GREEN PLATE POS\n\nTotal: " + formatPeso(total) +
-    "\n\nEnter cash received by customer:"
-  );
+        item.quantity += amount;
 
-  if (receivedInput === null) {
-    return;
-  }
+        if (item.quantity <= 0) {
+            cart = cart.filter(item => item.id !== id);
+        }
 
-  const received = Number(receivedInput);
-
-  if (
-    receivedInput.trim() === "" ||
-    !Number.isFinite(received) ||
-    received < total
-  ) {
-    alert("Invalid payment. Please enter an amount equal to or greater than " + formatPeso(total) + ".");
-    return;
-  }
-
-  const change = Math.round((received - total) * 100) / 100;
-  const orderCopy = order.map(item => ({ ...item }));
-
-  const receipt = [
-    "GREEN PLATE",
-    "CUSTOMER RECEIPT",
-    "--------------------------",
-    ...orderCopy.map(item =>
-      item.name + " x" + item.quantity +
-      " = " + formatPeso(item.price * item.quantity)
-    ),
-    "--------------------------",
-    "TOTAL: " + formatPeso(total),
-    "CASH: " + formatPeso(received),
-    "CHANGE: " + formatPeso(change),
-    "Thank you for dining with us!"
-  ].join("\n");
-
-  const printReceipt = confirm(
-    receipt + "\n\nPress OK to print the receipt."
-  );
-
-  if (printReceipt) {
-    const printWindow = window.open("", "_blank");
-
-    if (printWindow) {
-      printWindow.document.write(
-        "<!DOCTYPE html><html><head><title>Green Plate Receipt</title>" +
-        "<style>body{font-family:monospace;padding:20px;white-space:pre-wrap}" +
-       
-
-
-        "</style></head><body><pre>" +
-        receipt.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;") +
-        "</pre></body></html>"
-      );
-      printWindow.document.close();
-      printWindow.focus();
-      printWindow.print();
-    } else {
-      alert("Your browser blocked the print window. Please allow pop-ups and try again.");
+        renderCart();
     }
-  }
 
-  clearOrder();
-}
+    function removeItem(id) {
+        cart = cart.filter(item => item.id !== id);
+        renderCart();
+    }
 
- 
-function filterCategory(category, button) {
-  document.querySelectorAll(".category-btn").forEach(btn => {
-    btn.classList.remove("active");
-  });
+    function renderCart() {
+        const cartItems = document.getElementById("cart-items");
+        const totalElement = document.getElementById("total");
 
-  button.classList.add("active");
+        if (cart.length === 0) {
+            cartItems.innerHTML = "<p>Your cart is empty.</p>";
+            totalElement.textContent = "0.00";
+            return;
+        }
 
-  document.querySelectorAll(".food-card").forEach(card => {
-    const cardCategory = card.dataset.category;
+        cartItems.innerHTML = cart.map(item => `
+            <div class="cart-row">
+                <div>
+                    <strong>${item.name}</strong><br>
+                    ₱${item.price.toFixed(2)} each<br>
+                    Qty: ${item.quantity}
+                </div>
 
-    const matchesCategory =
-      category === "all" || cardCategory === category;
+                <div>
+                    <button onclick="changeQuantity(${item.id}, -1)">
+                        −
+                    </button>
+                    <button onclick="changeQuantity(${item.id}, 1)">
+                        +
+                    </button>
+                    <button class="remove-btn"
+                        onclick="removeItem(${item.id})">
+                        ✕
+                    </button>
+                </div>
+            </div>
+        `).join("");
 
-    card.style.display = matchesCategory ? "" : "none";
-  });
-}
+        totalElement.textContent = getTotal().toFixed(2);
+    }
 
-  </script>
+    function getTotal() {
+        return cart.reduce(
+            (sum, item) => sum + item.price * item.quantity,
+            0
+        );
+    }
+
+    function checkout() {
+        if (cart.length === 0) {
+            alert("Please add items to your order first.");
+            return;
+        }
+
+        const total = getTotal();
+
+        const receipt = cart.map(item =>
+            `${item.name} x${item.quantity} = ₱${(
+                item.price * item.quantity
+            ).toFixed(2)}`
+        ).join("\n");
+
+        const confirmed = confirm(
+            "Confirm order?\n\n" +
+            receipt +
+            "\n\nTOTAL: ₱" + total.toFixed(2)
+        );
+
+        if (!confirmed) return;
+
+        document.getElementById("receipt").textContent =
+            "ORDER COMPLETED\n" +
+            "--------------------\n" +
+            receipt +
+            "\n--------------------\n" +
+            "TOTAL: ₱" + total.toFixed(2) +
+            "\nThank you for your order!";
+
+        alert("Order completed successfully!");
+
+        cart = [];
+        renderCart();
+    }
+
+    function clearCart() {
+        if (cart.length === 0) return;
+
+        if (confirm("Are you sure you want to clear this order?")) {
+            cart = [];
+            renderCart();
+            document.getElementById("receipt").textContent = "";
+        }
+    }
+
+    displayMenu();
+</script>
+
 </body>
 </html>
